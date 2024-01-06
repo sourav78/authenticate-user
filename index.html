@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Page</title>
+	<style>
+		body {
+			background-color: #fafafa;
+			font-family: Arial, sans-serif;
+		}
+
+		.container {
+			max-width: 400px;
+			margin: 50px auto;
+			padding: 40px;
+
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+		}
+
+		.profile-image {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			margin: 0 auto;
+			display: block;
+			object-fit: cover;
+		}
+
+		.username {
+			text-align: center;
+			font-size: 24px;
+			font-weight: bold;
+			margin: 10px 0;
+		}
+
+		.bio {
+			text-align: center;
+			font-size: 16px;
+			margin-bottom: 20px;
+		}
+
+		.follower-count {
+			text-align: center;
+			font-size: 18px;
+			color: #888;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"
+			alt="Profile Image" class="profile-image">
+		<h2 id="userName" class="username">John Doe</h2>
+		<p id="userBio" class="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		<p id="userEmail" class="follower-count">Email: getting</p>
+		<p id="name" class="follower-count"></p>
+	</div>
+</body>
+
+<script>
+
+	const fetchInformation = async () => {
+
+		const response = await fetch("https://authentication-node-f8yx.onrender.com/auth/userinfo", {
+			method: 'get',
+			credentials: 'include'
+		})
+
+		if(response.status !== 200) window.location.href = "login.html"
+		const user = await response.json()
+		console.log(user.data);
+
+		if(!user.success){
+			console.log("User not found");
+			console.log(user.msg);
+
+			return
+		}
+
+		document.getElementById("userName").innerText = user.data.username
+		document.getElementById("userBio").innerText = user.data.bio
+		document.getElementById("userEmail").innerText = user.data.email
+		document.getElementById("name").innerText = user.data.name
+	}
+
+	fetchInformation()
+
+</script>
+
+</html>
